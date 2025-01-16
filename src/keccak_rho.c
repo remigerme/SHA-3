@@ -17,6 +17,31 @@ const size_t RHO_OFFSETS[5][5] = {{0, 36, 3, 105 % 64, 210 % 64},
                                   {28, 55, 153 % 64, 21, 120 % 64},
                                   {91 % 64, 276 % 64, 231 % 64, 136 % 64, 78 % 64}};
 
+const uint64_t RC_CST[24] = {0x1,
+                             0x8082,
+                             0x800000000000808A,
+                             0x8000000080008000,
+                             0x808B,
+                             0x80000001,
+                             0x8000000080008081,
+                             0x8000000000008009,
+                             0x8A,
+                             0x88,
+                             0x80008009,
+                             0x8000000A,
+                             0x8000808B,
+                             0x800000000000008B,
+                             0x8000000000008089,
+                             0x8000000000008003,
+                             0x8000000000008002,
+                             0x8000000000000080,
+                             0x800A,
+                             0x800000008000000A,
+                             0x8000000080008081,
+                             0x8000000000008080,
+                             0x80000001,
+                             0x8000000080008008};
+
 void print_state(uint64_t *A) {
     for (int y = 0; y < 5; ++y) {
         for (int x = 0; x < 5; ++x)
@@ -135,6 +160,9 @@ char rc(int t) {
 }
 
 void iota(uint64_t *A, int i) {
+    /*
+    The following code was used to precompute constants.
+
     char RC[8];
     for (int b = 0; b < 8; ++b)
         RC[b] = 0;
@@ -144,7 +172,9 @@ void iota(uint64_t *A, int i) {
         set_bit(&RC[b / 8], b % 8, rc(j + 7 * i));
     }
 
-    A[idx(0, 0)] ^= u64_from_chars(RC);
+    printf("%" PRIX64 "\n", u64_from_chars(RC));
+    */
+    A[idx(0, 0)] ^= RC_CST[i];
 }
 
 /**
