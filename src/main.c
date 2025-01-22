@@ -4,23 +4,31 @@
 #include <stdio.h>
 #include <unistd.h>
 
+// Max input size (in bytes) is 100Mb
+#define MAX_INPUT_SIZE (1024 * 1024 * 100)
+
 int main(int argc, char **argv) {
     if (argc < 2) {
-        fprintf(stderr,
-                "[Usage] ./shake128 d\n\tWhere d is the length of the output in bytes\n");
+        fprintf(stderr, "[Usage] ./shake128 d\n\tWhere d is the length of the "
+                        "output in bytes\n");
         return 1;
     }
 
     size_t d = atoi(argv[1]);
 
-    size_t buf_size = 2048;
-    char buf[buf_size];
-    for (size_t i = 0; i < buf_size; ++i)
-        buf[i] = 0;
-    size_t bytes_read = read(STDIN_FILENO, buf, buf_size);
+    char *buf = (char *)calloc(MAX_INPUT_SIZE, sizeof(char));
+    size_t bytes_read = read(STDIN_FILENO, buf, MAX_INPUT_SIZE);
 
     char *res = shake128(buf, bytes_read, d);
+
+#if DEBUG
     for (size_t i = 0; i < d; ++i)
         printf("%02hhx", res[i]);
     printf("\n");
+#else
+    printf("%.*s\n", (int)d, res);
+#endif
+
+    free(buf);
+    free(res);
 }
