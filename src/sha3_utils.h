@@ -1,5 +1,5 @@
-#ifndef UTILS_H
-#define UTILS_H
+#ifndef SHA3_UTILS_H
+#define SHA3_UTILS_H
 
 #include <stdint.h>
 #include <stdlib.h>
@@ -48,4 +48,4 @@ void set_bit(char *x, char i, char v);
  */
 uint64_t rotl_64(uint64_t x, size_t i);
 
-#endif // UTILS_H
+#endif // SHA3_UTILS_H

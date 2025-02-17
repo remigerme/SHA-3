@@ -1,4 +1,4 @@
-#include "utils.h"
+#include "sha3_utils.h"
 
 #include <assert.h>
 

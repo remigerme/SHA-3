@@ -1,8 +1,8 @@
 CC = gcc
-CFLAGS = -g -O2 -Wall -Wextra -Werror # -DDEBUG
+CFLAGS = -O2 -Wall -Wextra -Werror # -g -DDEBUG
 INCLUDES = -lm -Isrc
 
-shake128: src/utils.c src/keccak_rho.c src/sponge.c src/keccak_c.c src/sha3.c src/main.c
+shake128: src/sha3_utils.c src/keccak_rho.c src/sponge.c src/keccak_c.c src/sha3.c src/main.c
 	$(CC) $(CFLAGS) $(INCLUDES) -o $@ $^
 
 clean:
