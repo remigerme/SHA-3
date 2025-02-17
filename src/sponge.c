@@ -5,17 +5,17 @@
 #include <string.h>
 
 #include "keccak_c.h"
-#include "utils.h"
+#include "sha3_utils.h"
 
-char *sponge(size_t b, void (*f)(size_t, char *, char *),
-             void (*pad)(size_t, size_t, char *), size_t r, char *N,
-             size_t n_size_bits, size_t d) {
+void sponge(size_t b, void (*f)(size_t, char *, char *),
+            void (*pad)(size_t, size_t, char *), size_t r, char *N,
+            size_t n_size_bits, size_t d, char *digest) {
     // Step 1
     size_t padding_size = get_padding_size(8 * r, n_size_bits);
     assert((n_size_bits + padding_size) % (8 * r) == 0);
     size_t p_size = (n_size_bits + padding_size) / 8;
 
-    char *P = (char *)malloc(sizeof(char) * p_size);
+    char *P = (char *)malloc(p_size);
     // Copy n_size_bits of N in P
     memcpy(P, N, n_size_bits / 8);               // whole bytes
     for (size_t i = 0; i < n_size_bits % 8; ++i) // left bits
@@ -50,7 +50,7 @@ char *sponge(size_t b, void (*f)(size_t, char *, char *),
 
     // Step 7
     size_t nz_max = ceil((double)d / (double)r) * r;
-    char *Z = (char *)malloc(sizeof(char) * nz_max);
+    char *Z = (char *)malloc(nz_max);
     size_t nz = 0;
 
     while (nz < d) {
@@ -64,11 +64,8 @@ char *sponge(size_t b, void (*f)(size_t, char *, char *),
     }
 
     // Step 9
-    char *Z_out = (char *)malloc(sizeof(char) * d);
-    memcpy(Z_out, Z, d);
+    memcpy(digest, Z, d);
 
     free(P);
     free(Z);
-
-    return Z_out;
 }

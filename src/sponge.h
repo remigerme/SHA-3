@@ -12,10 +12,10 @@
  * @param N Input buffer (not null-terminated)
  * @param n_size_bits Size of the input buffer in BITS
  * @param d Length of the output string in bytes
- * @return Output string of length d (in bytes)
+ * @param digest The output buffer of size d bytes
  */
-char *sponge(size_t b, void (*f)(size_t, char *, char *),
-             void (*pad)(size_t, size_t, char *), size_t r, char *N, size_t n_size_bits,
-             size_t d);
+void sponge(size_t b, void (*f)(size_t, char *, char *),
+            void (*pad)(size_t, size_t, char *), size_t r, char *N,
+            size_t n_size_bits, size_t d, char *digest);
 
 #endif // SPONGE_H

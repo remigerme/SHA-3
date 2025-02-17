@@ -17,9 +17,14 @@ int main(int argc, char **argv) {
     size_t d = atoi(argv[1]);
 
     char *buf = (char *)calloc(MAX_INPUT_SIZE, sizeof(char));
+    if (buf == NULL) {
+        fprintf(stderr, "Couldn't allocate %d bytes\n", MAX_INPUT_SIZE);
+        return 1;
+    }
     size_t bytes_read = read(STDIN_FILENO, buf, MAX_INPUT_SIZE);
 
-    char *res = shake128(buf, bytes_read, d);
+    char *res = (char *)malloc(d);
+    shake128(buf, bytes_read, d, res);
 
 #if DEBUG
     for (size_t i = 0; i < d; ++i)

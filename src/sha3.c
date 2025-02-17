@@ -4,7 +4,7 @@
 #include <string.h>
 
 #include "keccak_c.h"
-#include "utils.h"
+#include "sha3_utils.h"
 
 // Returns a new array with the two bits suffix 01
 char *prepare_sha3(char *M, size_t n) {
@@ -15,24 +15,28 @@ char *prepare_sha3(char *M, size_t n) {
     return N;
 }
 
-char *sha3_224(char *M, size_t n) {
+void sha3_224(char *M, size_t n, char digest[28]) {
     char *N = prepare_sha3(M, n);
-    return keccak_c(56, N, 8 * n + 2, 28);
+    keccak_c(56, N, 8 * n + 2, 28, digest);
+    free(N);
 }
 
-char *sha3_256(char *M, size_t n) {
+void sha3_256(char *M, size_t n, char digest[32]) {
     char *N = prepare_sha3(M, n);
-    return keccak_c(64, N, 8 * n + 2, 32);
+    keccak_c(64, N, 8 * n + 2, 32, digest);
+    free(N);
 }
 
-char *sha3_384(char *M, size_t n) {
+void sha3_384(char *M, size_t n, char digest[48]) {
     char *N = prepare_sha3(M, n);
-    return keccak_c(96, N, 8 * n + 2, 48);
+    keccak_c(96, N, 8 * n + 2, 48, digest);
+    free(N);
 }
 
-char *sha3_512(char *M, size_t n) {
+void sha3_512(char *M, size_t n, char digest[64]) {
     char *N = prepare_sha3(M, n);
-    return keccak_c(128, N, 8 * n + 2, 64);
+    keccak_c(128, N, 8 * n + 2, 64, digest);
+    free(N);
 }
 
 // Returns a new array with the 4 bits suffix 1111
@@ -46,12 +50,14 @@ char *prepare_shake(char *M, size_t n) {
     return N;
 }
 
-char *shake128(char *M, size_t n, size_t d) {
+void shake128(char *M, size_t n, size_t d, char *digest) {
     char *N = prepare_shake(M, n);
-    return keccak_c(32, N, 8 * n + 4, d);
+    keccak_c(32, N, 8 * n + 4, d, digest);
+    free(N);
 }
 
-char *shake256(char *M, size_t n, size_t d) {
+void shake256(char *M, size_t n, size_t d, char *digest) {
     char *N = prepare_shake(M, n);
-    return keccak_c(64, N, 8 * n + 4, d);
+    keccak_c(64, N, 8 * n + 4, d, digest);
+    free(N);
 }

@@ -18,9 +18,9 @@ size_t get_padding_size(size_t x, size_t m);
  * See section 5.1 p19.
  * @param x The desired padding alignment in bits
  * @param m The length of the string to pad in bits
- * @param in The string to pad. Padding bits will be added at the end. It is caller's
- * responsability to make sure enough memory has been allocated (use get_padding_size to
- * prepare the buffer)
+ * @param in The string to pad. Padding bits will be added at the end. It is
+ * caller's responsability to make sure enough memory has been allocated (use
+ * get_padding_size to prepare the buffer)
  */
 void pad10_1(size_t x, size_t m, char *in);
 
@@ -30,8 +30,8 @@ void pad10_1(size_t x, size_t m, char *in);
  * @param N The input string
  * @param n_size_bits The size of the input string in bits
  * @param d The output length in bytes
- * @return Return an output string of size d bytes
+ * @param digest The output buffer of size d bytes
  */
-char *keccak_c(size_t c, char *N, size_t n_size_bits, size_t d);
+void keccak_c(size_t c, char *N, size_t n_size_bits, size_t d, char *digest);
 
 #endif // KECCAK_H

@@ -4,18 +4,19 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "utils.h"
+#include "sha3_utils.h"
 
 /**
  * Index of the lane (x, y) of the state
  */
 int idx(int x, int y) { return 5 * x + y; }
 
-const size_t RHO_OFFSETS[5][5] = {{0, 36, 3, 105 % 64, 210 % 64},
-                                  {1, 300 % 64, 10, 45, 66 % 64},
-                                  {190 % 64, 6, 171 % 64, 15, 253 % 64},
-                                  {28, 55, 153 % 64, 21, 120 % 64},
-                                  {91 % 64, 276 % 64, 231 % 64, 136 % 64, 78 % 64}};
+const size_t RHO_OFFSETS[5][5] = {
+    {0, 36, 3, 105 % 64, 210 % 64},
+    {1, 300 % 64, 10, 45, 66 % 64},
+    {190 % 64, 6, 171 % 64, 15, 253 % 64},
+    {28, 55, 153 % 64, 21, 120 % 64},
+    {91 % 64, 276 % 64, 231 % 64, 136 % 64, 78 % 64}};
 
 const uint64_t RC_CST[24] = {0x1,
                              0x8082,
@@ -81,7 +82,8 @@ void theta(uint64_t *A) {
     // Step 1
     uint64_t C[5];
     for (int x = 0; x < 5; ++x)
-        C[x] = A[idx(x, 0)] ^ A[idx(x, 1)] ^ A[idx(x, 2)] ^ A[idx(x, 3)] ^ A[idx(x, 4)];
+        C[x] = A[idx(x, 0)] ^ A[idx(x, 1)] ^ A[idx(x, 2)] ^ A[idx(x, 3)] ^
+               A[idx(x, 4)];
 
     // Step 2
     uint64_t D[5];
@@ -138,7 +140,8 @@ void chi(uint64_t *A) {
     for (int x = 0; x < 5; ++x)
         for (int y = 0; y < 5; ++y)
             A_temp[idx(x, y)] =
-                A[idx(x, y)] ^ ((A[idx((x + 1) % 5, y)] ^ (~0)) & A[idx((x + 2) % 5, y)]);
+                A[idx(x, y)] ^
+                ((A[idx((x + 1) % 5, y)] ^ (~0)) & A[idx((x + 2) % 5, y)]);
 
     memcpy(A, A_temp, 25 * 8);
 }
